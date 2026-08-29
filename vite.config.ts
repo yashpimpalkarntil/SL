@@ -9,6 +9,6 @@ export default defineConfig({
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
-    tailwindcss() as PluginOption,
+    tailwindcss() as unknown as PluginOption,
   ],
 })
