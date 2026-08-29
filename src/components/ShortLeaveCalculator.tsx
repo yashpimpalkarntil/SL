@@ -12,7 +12,7 @@ import {
 } from "../lib/time";
 import type { DayName } from "../lib/time";
 
-const DEFAULT_START = "09:30";
+const DEFAULT_START = "09:15";
 
 export default function ShortLeaveCalculator() {
   // Snapshot of "now", refreshed every 30s. Used to default the day picker,
@@ -27,23 +27,28 @@ export default function ShortLeaveCalculator() {
   );
   const [minutesTouched, setMinutesTouched] = useState(false);
 
-  // Default to the real current day on mount, so first paint still matches
-  // between server and client, then keep `now` ticking for the overdue check.
-  useEffect(() => {
-    const today = new Date();
-    setNow(today);
-    setDay(DAYS[today.getDay()]);
-    const id = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Whenever the day changes (and the user hasn't hand-edited the minutes),
-  // snap the short-leave minutes to that day's usual rate (45, 30 on Saturday).
-  useEffect(() => {
+  const [prevDay, setPrevDay] = useState<DayName>(day);
+  if (prevDay !== day) {
+    setPrevDay(day);
     if (!minutesTouched) {
       setShortLeaveMinutes(shortLeaveDeductionForDay(day));
     }
-  }, [day, minutesTouched]);
+  }
+
+  // Default to the real current day on mount, so first paint still matches
+  // between server and client, then keep `now` ticking for the overdue check.
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      const today = new Date();
+      setNow(today);
+      setDay(DAYS[today.getDay()]);
+    }, 0);
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => {
+      clearTimeout(timerId);
+      clearInterval(id);
+    };
+  }, []);
 
   const startMinutes = useMemo(() => parseFlexibleTime(startTime), [startTime]);
   const baseDuration = baseDurationForDay(day);

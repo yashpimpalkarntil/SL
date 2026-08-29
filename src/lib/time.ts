@@ -1,5 +1,5 @@
 export const STANDARD_DURATION_MIN = 9 * 60; // 09:00 on regular working days
-export const SATURDAY_DURATION_MIN = 8 * 60; // 08:00 on Saturdays
+export const SATURDAY_DURATION_MIN = 8 * 60 + 15; // 08:15 on Saturdays
 export const SHORT_LEAVE_DEDUCTION_MIN = 45; // minus 45 minutes when short leave is taken (regular days)
 export const SATURDAY_SHORT_LEAVE_DEDUCTION_MIN = 30; // minus 30 minutes when short leave is taken on Saturday
 

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "tsx --test src/lib/time.test.ts",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -29,8 +30,12 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
+    "tsx": "^4.19.3",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
     "vite": "^8.2.0"
+  },
+  "overrides": {
+    "balanced-match": "4.0.4"
   }
 }
